@@ -4,6 +4,8 @@ import cz.cvut.fel.annotator.mediaAsset.dto.internal.MediaAssetDto;
 import cz.cvut.fel.annotator.mediaAsset.persistence.MediaAsset;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneOffset;
+
 @Component
 public class MediaAssetMapper {
 
@@ -13,7 +15,10 @@ public class MediaAssetMapper {
                 entity.getType(),
                 entity.getSource(),
                 MediaAssetMapperUtils.mapStatus(entity.getAnnotations().size()),
-                null
+                entity.getModifiedAt() != null
+                        ? MediaAssetMapperUtils.formatInstant(
+                        entity.getModifiedAt().toInstant(ZoneOffset.UTC))
+                        : null
         );
     }
 

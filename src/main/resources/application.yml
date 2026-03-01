@@ -5,7 +5,7 @@ spring:
 server:
   port: ${SERVER_PORT:5040}
   servlet:
-    context-path: ${SERVER_CONTEXT_PATH:/annotator-server/api}
+    context-path: ${SERVER_CONTEXT_PATH:/annotator-server}
   shutdown: graceful
 
 management:
@@ -42,7 +42,7 @@ persistence:
 
 cors:
   enabled: ${CORS_ENABLED:true}
-  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:2030}
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://localhost:2030}
   allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
   allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type}
   exposed-headers: ${CORS_EXPOSED_HEADERS:}

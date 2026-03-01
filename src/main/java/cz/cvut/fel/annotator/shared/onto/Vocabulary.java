@@ -3,8 +3,6 @@ package cz.cvut.fel.annotator.shared.onto;
 public class Vocabulary {
 
     public static final String Thing = "http://www.w3.org/2002/07/owl#Thing";
-    public static final String RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
-    public static final String RDFS_LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
     public static final String URI_BASE = "http://onto.fel.cvut.cz/ontologies/form/";
     public static final String ANNOTATOR_MEDIA_URI_BASE = URI_BASE + "media/";
     public static final String ANNOTATOR_ANNOTATION_URI_BASE = ANNOTATOR_MEDIA_URI_BASE + "annotation/";
@@ -23,7 +21,7 @@ public class Vocabulary {
     public static final String MEDIA_DATA_GRAPH = Vocabulary.ANNOTATOR_MEDIA_URI_BASE + "data";
     public static final String Annotation = ANNOTATOR_MEDIA_URI_BASE + "annotation";
     public static final String MediaAsset = ANNOTATOR_MEDIA_URI_BASE + "asset";
-    public static final String application_type = ANNOTATOR_MEDIA_URI_BASE + "application-type";
+    public static final String modifiedAt = ANNOTATOR_MEDIA_URI_BASE + "modified-at";
     public static final String id = ANNOTATOR_MEDIA_URI_BASE + "id";
     public static final String hasSource = ANNOTATOR_MEDIA_URI_BASE + "has-source";
     public static final String hasReferenceId = ANNOTATOR_MEDIA_URI_BASE + "has-reference-id";

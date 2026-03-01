@@ -1,6 +1,7 @@
 package cz.cvut.fel.annotator.mediaAsset.rest;
 
 import cz.cvut.fel.annotator.mediaAsset.dto.internal.MediaAssetDto;
+import cz.cvut.fel.annotator.mediaAsset.service.MediaAssetFacade;
 import cz.cvut.fel.annotator.mediaAsset.service.MediaAssetService;
 import cz.cvut.fel.annotator.mediaAsset.service.MediaCmsAdapterService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MediaAssetController {
 
-    private final MediaCmsAdapterService mediaCmsAdapterService;
-    private final MediaAssetService mediaAssetService;
+    private final MediaAssetFacade mediaAssetFacade;
 
     @GetMapping("/adapter/playlist/{listId}")
     public ResponseEntity<List<MediaAssetDto>> getMediaAssetsFromMediaCms(
@@ -28,14 +28,14 @@ public class MediaAssetController {
     ) {
         log.debug("GET playlist id with adapter asset {}", listId);
         return ResponseEntity.ok(
-                mediaCmsAdapterService.getMediaAssetsList(listId)
+                mediaAssetFacade.getPlaylist(listId)
         );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MediaAssetDto> getMediaAsset(@PathVariable String id) {
         log.debug("GET media asset {}", id);
-        MediaAssetDto asset = mediaAssetService.getById(id);
+        MediaAssetDto asset = mediaAssetFacade.getById(id);
         return ResponseEntity.ok(asset);
     }
 
