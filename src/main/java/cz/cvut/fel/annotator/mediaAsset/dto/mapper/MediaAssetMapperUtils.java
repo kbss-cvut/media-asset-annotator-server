@@ -4,6 +4,8 @@ import cz.cvut.fel.annotator.mediaAsset.dto.internal.MediaStatus;
 import cz.cvut.fel.annotator.mediaAsset.dto.internal.MediaType;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class MediaAssetMapperUtils {
 
@@ -29,6 +31,15 @@ public class MediaAssetMapperUtils {
 
     public static Instant parseInstant(String value) {
         return value != null ? Instant.parse(value) : null;
+    }
+
+
+    public static String formatInstant(Instant value) {
+        if (value == null) return null;
+        return DateTimeFormatter
+                .ofPattern("dd MMM yyyy HH:mm")
+                .withZone(ZoneOffset.UTC)
+                .format(value);
     }
 
 }

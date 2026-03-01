@@ -25,15 +25,9 @@ public abstract class Thing
     @Id(generated = true)
     protected URI entityId;
 
-    @OWLDataProperty(iri = Vocabulary.application_type)
-    protected String applicationType = this.getClass().getSimpleName();
-
-    @OWLAnnotationProperty(iri = RDFS.LABEL)
-    protected String name;
     @OWLAnnotationProperty(iri = cz.cvut.kbss.jopa.vocabulary.DC.Terms.DESCRIPTION)
     protected String description;
-    @Types
-    protected Set<String> types;
+
     @Properties(fetchType = FetchType.EAGER)
     protected Map<URI, Set<Object>> properties;
 

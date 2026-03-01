@@ -10,6 +10,9 @@ public record MediaAssetDto(
         MediaType type,
         String src,
         MediaStatus status,
-        Instant modifiedAt
+        String modifiedAt
 ) {
+    public MediaAssetDto withModifiedAt(String modifiedAt) {
+        return new MediaAssetDto(id, type, src, status, modifiedAt);
+    }
 }

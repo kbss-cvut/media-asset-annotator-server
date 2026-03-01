@@ -19,7 +19,9 @@ public class MediaCmsMapper {
                 MediaAssetMapperUtils.mapType(media.media_type()),
                 src,
                 MediaAssetMapperUtils.mapStatus(annotationsCount),
-                MediaAssetMapperUtils.parseInstant(String.valueOf(media.add_date()))
+                MediaAssetMapperUtils.formatInstant(
+                        MediaAssetMapperUtils.parseInstant(String.valueOf(media.add_date()))
+                )
         );
     }
 
@@ -34,7 +36,9 @@ public class MediaCmsMapper {
                 MediaAssetMapperUtils.mapType(media.mediaType()),
                 src,
                 MediaAssetMapperUtils.mapStatus(annotationsCount),
-                MediaAssetMapperUtils.parseInstant(media.editDate())
+                MediaAssetMapperUtils.formatInstant(
+                        MediaAssetMapperUtils.parseInstant(String.valueOf(media.editDate()))
+                )
         );
     }
 

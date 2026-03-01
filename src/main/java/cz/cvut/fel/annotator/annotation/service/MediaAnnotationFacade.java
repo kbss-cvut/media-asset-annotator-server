@@ -2,6 +2,7 @@ package cz.cvut.fel.annotator.annotation.service;
 
 import cz.cvut.fel.annotator.annotation.dto.AnnotationDto;
 import cz.cvut.fel.annotator.mediaAsset.persistence.MediaAsset;
+import cz.cvut.fel.annotator.mediaAsset.service.MediaAssetFacade;
 import cz.cvut.fel.annotator.mediaAsset.service.MediaAssetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class MediaAnnotationFacade {
 
-    private final MediaAssetService mediaAssetService;
+    private final MediaAssetFacade mediaAssetService;
     private final AnnotationService annotationService;
 
     public void patch(String referenceId, List<AnnotationDto> dtos) {

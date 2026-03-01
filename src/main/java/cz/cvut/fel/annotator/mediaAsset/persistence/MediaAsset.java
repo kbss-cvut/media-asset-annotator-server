@@ -10,6 +10,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @OWLClass(iri = Vocabulary.MediaAsset)
@@ -34,5 +36,8 @@ public class MediaAsset extends Thing implements Serializable {
     @Enumerated(EnumType.STRING)
     @OWLDataProperty(iri = Vocabulary.hasMediaType, datatype = XSD.STRING, simpleLiteral = true, fetch = FetchType.EAGER)
     private MediaType type;
+
+    @OWLDataProperty(iri = Vocabulary.modifiedAt)
+    private LocalDateTime modifiedAt;
 }
 

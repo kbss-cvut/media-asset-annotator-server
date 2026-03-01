@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
 
@@ -73,6 +75,7 @@ public class AnnotationService {
             mediaAsset.getAnnotations().add(entity);
         }
 
+        mediaAsset.setModifiedAt(LocalDateTime.now(ZoneOffset.UTC));
         mediaAssetDao.update(mediaAsset);
         log.info("Patched annotations for media asset {}", mediaAsset.getReferenceId());
     }
