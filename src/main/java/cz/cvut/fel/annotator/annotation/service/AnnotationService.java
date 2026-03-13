@@ -41,7 +41,7 @@ public class AnnotationService {
     ) {
         log.info("Adding {} annotations to media asset {}", annotationDtos.size(), referenceId);
 
-        MediaAsset mediaAsset = mediaAssetDao.getByReferenceId(referenceId)
+        MediaAsset mediaAsset = mediaAssetDao.findByReferenceId(referenceId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Media asset not found for referenceId: " + referenceId));
 
@@ -96,7 +96,7 @@ public class AnnotationService {
     ) {
         log.info("Deleting annotation {} from media asset {}", annotationId, referenceId);
 
-        MediaAsset mediaAsset = mediaAssetDao.getByReferenceId(referenceId)
+        MediaAsset mediaAsset = mediaAssetDao.findByReferenceId(referenceId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Media asset not found for referenceId: " + referenceId));
 

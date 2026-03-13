@@ -33,10 +33,21 @@ public class MediaAssetFacade {
                 });
     }
 
+
+    public MediaAssetDto getBySource(String source) {
+        log.debug("Fetching MediaAsset by source {}", source);
+        return mediaAssetService
+                .findBySource(source)
+                .orElseGet(() -> {
+                    log.info("MediaAsset with source{} not found locally", source);
+                    return  null;
+                });
+    }
+
     public MediaAsset getEntityByIdOrPersist(String token) {
         log.debug("Fetching MediaAsset entity {}", token);
         return dao
-                .getByReferenceId(token)
+                .findByReferenceId(token)
                 .orElseGet(() -> {
                     log.info("MediaAsset {} not found locally. Fetching from MediaCMS.", token);
                     MediaAssetDto dto = mediaCmsAdapterService.getMediaAsset(token);
@@ -55,8 +66,7 @@ public class MediaAssetFacade {
     }
 
     private MediaAssetDto enrichWithLocalData(MediaAssetDto dto) {
-        Optional<MediaAsset> byReferenceId = dao.getByReferenceId(dto.id());
-        log.info("Enriching MediaAsset {} with local data. Found locally: {}", dto.id(), byReferenceId);
+        Optional<MediaAsset> byReferenceId = dao.findByReferenceId(dto.id());
         return byReferenceId
                 .map(local -> local.getModifiedAt() != null
                         ? dto.withModifiedAt(MediaAssetMapperUtils.formatInstant(

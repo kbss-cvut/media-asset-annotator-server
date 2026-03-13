@@ -7,10 +7,7 @@ import cz.cvut.fel.annotator.mediaAsset.service.MediaCmsAdapterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,10 +30,20 @@ public class MediaAssetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MediaAssetDto> getMediaAsset(@PathVariable String id) {
-        log.debug("GET media asset {}", id);
+    public ResponseEntity<MediaAssetDto> getMediaAssetById(@PathVariable String id) {
+        log.debug("GET media asset by id{}", id);
         MediaAssetDto asset = mediaAssetFacade.getById(id);
         return ResponseEntity.ok(asset);
     }
+
+
+    @GetMapping("/source")
+    public ResponseEntity<MediaAssetDto> getMediaAssetBySource(@RequestParam String url) {
+        log.debug("GET media asset by source {}", url);
+        MediaAssetDto asset = mediaAssetFacade.getBySource(url);
+        return ResponseEntity.ok(asset);
+    }
+
+
 
 }
