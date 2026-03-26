@@ -1,7 +1,6 @@
 package cz.cvut.fel.annotator.shared.exception.handler;
 
-import cz.cvut.fel.annotator.shared.exception.MediaCmsException;
-import cz.cvut.fel.annotator.shared.exception.ResourceNotFoundException;
+import cz.cvut.fel.annotator.shared.exception.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,36 +14,23 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleNotFound(
-            ResourceNotFoundException ex,
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiException(
+            ApiException ex,
             HttpServletRequest request
     ) {
-        log.warn("Resource not found: {}", ex.getMessage());
+        logByStatus(ex);
 
         return buildResponse(
-                HttpStatus.NOT_FOUND,
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-    }
-
-    @ExceptionHandler(MediaCmsException.class)
-    public ResponseEntity<ApiErrorResponse> handleBadGateway(
-            MediaCmsException ex,
-            HttpServletRequest request
-    ) {
-        log.error("Upstream service failure", ex);
-
-        return buildResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getStatus(),
+                ex.getErrorCode(),
                 ex.getMessage(),
                 request.getRequestURI()
         );
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGeneric(
+    public ResponseEntity<ApiErrorResponse> handleUnexpected(
             Exception ex,
             HttpServletRequest request
     ) {
@@ -52,24 +38,35 @@ public class GlobalExceptionHandler {
 
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                "Unexpected server error. " + ex.getMessage(),
+                "INTERNAL_ERROR",
+                "Unexpected server error",
                 request.getRequestURI()
         );
     }
 
+    private void logByStatus(ApiException ex) {
+        if (ex.getStatus().is4xxClientError()) {
+            log.warn(ex.getMessage());
+        } else {
+            log.error(ex.getMessage(), ex);
+        }
+    }
+
     private ResponseEntity<ApiErrorResponse> buildResponse(
             HttpStatus status,
+            String errorCode,
             String message,
             String path
     ) {
-        return ResponseEntity
-                .status(status)
-                .body(new ApiErrorResponse(
+        return ResponseEntity.status(status).body(
+                new ApiErrorResponse(
                         Instant.now(),
                         status.value(),
                         status.getReasonPhrase(),
+                        errorCode,
                         message,
                         path
-                ));
+                )
+        );
     }
 }
