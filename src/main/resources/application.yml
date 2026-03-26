@@ -32,6 +32,9 @@ mediacms:
   public-base-url: ${MEDIA_CMS_PUBLIC_BASE_URL:http://localhost:2080}
   api-base: ${MEDIA_CMS_API_BASE:/api/v1}
 
+record-manager:
+  api-base-url: ${RM_API_BASE_URL:http://localhost:8080/record-manager/api/v1}
+
 persistence:
   username: ${DB_USERNAME:admin}
   password: ${DB_PASSWORD:root}

@@ -4,22 +4,22 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class MediaCmsException extends RuntimeException {
+public class MediaCmsException extends ApiException {
 
-    private final HttpStatus status;
     private final String rawBody;
+    private final String uri;
 
-    public MediaCmsException(HttpStatus status, String rawBody) {
-        super("MediaCMS error: " + status);
-        this.status = status;
+    public MediaCmsException(HttpStatus status, String uri, String rawBody) {
+        super(status, "MEDIA_CMS_ERROR",
+                String.format("MediaCMS request failed [%s]: %s", status, uri));
         this.rawBody = rawBody;
+        this.uri = uri;
     }
 
-    public MediaCmsException(String message) {
-        super(message);
-        this.status = HttpStatus.BAD_GATEWAY;
+    public MediaCmsException(String uri, String message) {
+        super(HttpStatus.BAD_GATEWAY, "MEDIA_CMS_ERROR",
+                String.format("MediaCMS request failed: %s (%s)", message, uri));
         this.rawBody = null;
+        this.uri = uri;
     }
-
 }
-
