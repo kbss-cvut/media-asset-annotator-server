@@ -34,6 +34,7 @@ mediacms:
 
 record-manager:
   api-base-url: ${RM_API_BASE_URL:http://localhost:8080/record-manager/api/v1}
+  update-listener-path: ${RM_UPDATE_LISTENER_API_PATH:/listener/update}
 
 persistence:
   username: ${DB_USERNAME:admin}

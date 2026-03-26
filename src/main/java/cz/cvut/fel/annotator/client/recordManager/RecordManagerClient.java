@@ -5,6 +5,7 @@ import cz.cvut.fel.annotator.shared.constants.Constants;
 import cz.cvut.fel.annotator.shared.exception.RecordManagerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,12 +18,11 @@ public class RecordManagerClient {
 
     private final WebClient recordManagerWebClient;
 
-    public void putMediaAsset(String referenceId, MediaAssetDtoLD dto) {
-        String path = "/%s/%s".formatted(
-                Constants.RecordManager.ASSET_UPDATE_LISTENER_PATH,
-                referenceId
-        );
-        put(path, dto);
+    @Value("${record-manager.update-listener-path}")
+    private String listenerPath;
+
+    public void putMediaAsset(MediaAssetDtoLD dto) {
+        put(listenerPath, dto);
     }
 
     private <T> void put(String path, T body) {

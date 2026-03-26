@@ -12,7 +12,6 @@ import cz.cvut.fel.annotator.repository.model.MediaAsset;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class ReplaceNotifierService {
                     .map(annotationMapper::toLd)
                     .toList();
             payload.setHasAnnotation(annotations);
-            recordManagerClient.putMediaAsset(referenceId, payload);
+            recordManagerClient.putMediaAsset(payload);
 
 
         } catch (Exception e) {
