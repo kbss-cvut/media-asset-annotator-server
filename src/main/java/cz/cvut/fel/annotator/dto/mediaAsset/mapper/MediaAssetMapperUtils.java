@@ -42,6 +42,10 @@ public final class MediaAssetMapperUtils {
     }
 
 
+    public static String blankToNull(String value) {
+        return (value == null || value.isBlank()) ? null : value;
+    }
+
     public static String formatInstant(Instant instant) {
         return instant != null
                 ? DateTimeFormatter.ISO_INSTANT.format(instant)

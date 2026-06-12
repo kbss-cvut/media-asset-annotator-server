@@ -28,6 +28,8 @@ public class Vocabulary {
     public static final String modifiedAt = ANNOTATOR_MEDIA_URI_BASE + "modified-at";
     public static final String id = ANNOTATOR_MEDIA_URI_BASE + "id";
     public static final String hasSource = ANNOTATOR_MEDIA_URI_BASE + "has-source";
+    public static final String hasName = ANNOTATOR_MEDIA_URI_BASE + "has-name";
+    public static final String hasDescription = ANNOTATOR_MEDIA_URI_BASE + "has-description";
     public static final String hasReferenceId = ANNOTATOR_MEDIA_URI_BASE + "has-reference-id";
     public static final String hasMediaType = ANNOTATOR_MEDIA_URI_BASE + "has-media-type";
     public static final String hasAnnotation = ANNOTATOR_MEDIA_URI_BASE + "has-annotation";

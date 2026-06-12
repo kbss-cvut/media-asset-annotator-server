@@ -17,10 +17,12 @@ public class MediaAssetMapper {
 
         return new MediaAssetDto(
                 entity.getReferenceId(),
+                MediaAssetMapperUtils.blankToNull(entity.getName()),
                 MediaAssetMapperUtils.toDtoType(entity.getType()),
                 entity.getSource(),
                 MediaAssetMapperUtils.mapStatus(entity.getAnnotations().size()),
-                MediaAssetMapperUtils.mapModifiedAt(entity)
+                MediaAssetMapperUtils.mapModifiedAt(entity),
+                MediaAssetMapperUtils.blankToNull(entity.getDescription())
         );
     }
 
@@ -29,6 +31,8 @@ public class MediaAssetMapper {
 
         return MediaAsset.builder()
                 .referenceId(dto.id())
+                .name(dto.name())
+                .description(dto.description())
                 .type(MediaAssetMapperUtils.toEntityType(dto.type()))
                 .source(dto.src())
                 .build();

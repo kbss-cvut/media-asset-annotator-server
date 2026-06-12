@@ -118,6 +118,7 @@ public class MediaCmsAdapterService {
 
             return mapper.fromPlaylist(
                     media,
+                    mediaDto,
                     src,
                     count
             );
