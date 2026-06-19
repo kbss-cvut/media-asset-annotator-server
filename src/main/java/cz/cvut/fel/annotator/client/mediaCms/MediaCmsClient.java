@@ -39,10 +39,6 @@ public class MediaCmsClient {
         );
     }
 
-    public MediaCmsMediaDto getMediaByUrl(String mediaApiUrl) {
-        return get(mediaApiUrl, MediaCmsMediaDto.class);
-    }
-
     private <T> T get(String uri, Class<T> responseType) {
         try {
             return mediaCmsWebClient.get()

@@ -6,27 +6,42 @@ import cz.cvut.fel.annotator.dto.mediaAsset.internal.MediaAssetDto;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @Component
 public class MediaCmsMapper {
 
+    /**
+     * Maps a single playlist listing entry. All fields come from the playlist
+     * response itself ({@code MediaSerializer}); no per-item detail call is made.
+     * {@code src} (MediaCMS {@code original_media_url}) is detail-only and is
+     * therefore omitted here — the list exposes {@code thumbnailUrl} for
+     * previews; {@code src} is fetched via the per-asset endpoint when needed.
+     */
     public MediaAssetDto fromPlaylist(
             PlaylistMediaDto media,
-            MediaCmsMediaDto details,
-            String src,
+            String thumbnailUrl,
+            String annotationsModifiedAt,
             int annotationCount
     ) {
         Objects.requireNonNull(media, "media must not be null");
 
         return new MediaAssetDto(
                 media.friendlyToken(),
-                details != null ? MediaAssetMapperUtils.blankToNull(details.title()) : null,
+                MediaAssetMapperUtils.blankToNull(media.title()),
                 MediaAssetMapperUtils.toDtoType(media.mediaType()),
-                src,
+                null,
                 MediaAssetMapperUtils.mapStatus(annotationCount),
                 MediaAssetMapperUtils.formatInstant(parseInstant(media.addDate())),
-                details != null ? MediaAssetMapperUtils.blankToNull(details.description()) : null
+                null,
+                annotationsModifiedAt,
+                MediaAssetMapperUtils.blankToNull(media.description()),
+                thumbnailUrl,
+                null,
+                media.duration(),
+                annotationCount,
+                media.user()
         );
     }
 
@@ -34,6 +49,7 @@ public class MediaCmsMapper {
             String id,
             MediaCmsMediaDto media,
             String src,
+            String thumbnailUrl,
             int annotationCount
     ) {
         Objects.requireNonNull(media, "media must not be null");
@@ -44,9 +60,33 @@ public class MediaCmsMapper {
                 MediaAssetMapperUtils.toDtoType(media.mediaType()),
                 src,
                 MediaAssetMapperUtils.mapStatus(annotationCount),
+                MediaAssetMapperUtils.formatInstant(parseInstant(media.addDate())),
                 MediaAssetMapperUtils.formatInstant(parseInstant(media.editDate())),
-                MediaAssetMapperUtils.blankToNull(media.description())
+                null,
+                MediaAssetMapperUtils.blankToNull(media.description()),
+                thumbnailUrl,
+                mapTags(media),
+                media.duration(),
+                annotationCount,
+                media.user()
         );
+    }
+
+    /**
+     * Tag titles from the detail response ({@code tags_info}); only the title is
+     * exposed. Returns {@code null} when there are no tags so the field is
+     * omitted from the response.
+     */
+    private List<String> mapTags(MediaCmsMediaDto media) {
+        if (media.tagsInfo() == null) {
+            return null;
+        }
+        List<String> tags = media.tagsInfo().stream()
+                .map(MediaCmsMediaDto.TagInfo::title)
+                .filter(Objects::nonNull)
+                .filter(t -> !t.isBlank())
+                .toList();
+        return tags.isEmpty() ? null : tags;
     }
 
 

@@ -34,6 +34,16 @@ public final class SparqlQueries {
               }
             }
             """;
+    public static final String COUNT_ANNOTATIONS_BY_MEDIA_REFERENCE_ID = """
+            SELECT ?refId (COUNT(?ann) AS ?count) WHERE {
+              GRAPH ?g {
+                ?media a ?mediaType ;
+                       ?refProp ?refId ;
+                       ?hasAnnotation ?ann .
+              }
+            }
+            GROUP BY ?refId
+            """;
 
 
     private SparqlQueries() {

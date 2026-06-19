@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -38,6 +39,20 @@ public class AnnotationService {
         return annotations.stream()
                 .map(annotationMapper::toDto)
                 .toList();
+    }
+
+    /**
+     * Annotation counts for all annotated media assets, keyed by reference id.
+     * Single batched query — use this when listing playlists instead of calling
+     * {@link #countByMediaAssetReferenceId(String)} per item.
+     */
+    public Map<String, Integer> countByMediaAssetReferenceId() {
+        Map<String, Integer> counts = annotationDao.countAnnotationsByMediaReferenceId();
+
+        log.info("{} Loaded annotation counts for {} annotated media asset(s)",
+                Constants.Log.ANNOTATION_SERVICE, counts.size());
+
+        return counts;
     }
 
     public int countByMediaAssetReferenceId(String referenceId) {
