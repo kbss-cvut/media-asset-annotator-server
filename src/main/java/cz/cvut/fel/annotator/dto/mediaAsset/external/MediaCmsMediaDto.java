@@ -3,11 +3,17 @@ package cz.cvut.fel.annotator.dto.mediaAsset.external;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Instant;
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record MediaCmsMediaDto(
 
         @JsonProperty("friendly_token")
         String friendlyToken,
+
+        @JsonProperty("user")
+        String user,
 
         @JsonProperty("title")
         String title,
@@ -18,6 +24,9 @@ public record MediaCmsMediaDto(
         @JsonProperty("original_media_url")
         String originalMediaUrl,
 
+        @JsonProperty("thumbnail_url")
+        String thumbnailUrl,
+
         @JsonProperty("media_type")
         String mediaType,
 
@@ -27,8 +36,14 @@ public record MediaCmsMediaDto(
         @JsonProperty("duration")
         Integer duration,
 
+        @JsonProperty("add_date")
+        Instant addDate,
+
         @JsonProperty("edit_date")
-        String editDate
+        Instant editDate,
+
+        @JsonProperty("tags_info")
+        List<TagInfo> tagsInfo
 
 ) {
 
@@ -37,6 +52,18 @@ public record MediaCmsMediaDto(
 
             @JsonProperty("master_file")
             String masterFile
+
+    ) {
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record TagInfo(
+
+            @JsonProperty("title")
+            String title,
+
+            @JsonProperty("url")
+            String url
 
     ) {
     }

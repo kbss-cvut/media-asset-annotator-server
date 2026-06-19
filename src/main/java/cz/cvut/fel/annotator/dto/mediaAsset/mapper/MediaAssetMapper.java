@@ -15,14 +15,23 @@ public class MediaAssetMapper {
     public MediaAssetDto toDto(MediaAsset entity) {
         Objects.requireNonNull(entity, "entity must not be null");
 
+        int annotationCount = entity.getAnnotations().size();
+
         return new MediaAssetDto(
                 entity.getReferenceId(),
                 MediaAssetMapperUtils.blankToNull(entity.getName()),
                 MediaAssetMapperUtils.toDtoType(entity.getType()),
                 entity.getSource(),
-                MediaAssetMapperUtils.mapStatus(entity.getAnnotations().size()),
+                MediaAssetMapperUtils.mapStatus(annotationCount),
+                null,
+                null,
                 MediaAssetMapperUtils.mapModifiedAt(entity),
-                MediaAssetMapperUtils.blankToNull(entity.getDescription())
+                MediaAssetMapperUtils.blankToNull(entity.getDescription()),
+                null,
+                null,
+                null,
+                annotationCount,
+                null
         );
     }
 

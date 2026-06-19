@@ -50,7 +50,8 @@ public class MediaAssetFacadeService {
 
         return mediaCmsAdapterService.getPlaylist(
                 playlistId,
-                annotationService::countByMediaAssetReferenceId
+                annotationService.countByMediaAssetReferenceId(),
+                mediaAssetService.annotationsModifiedAtByReferenceId()
         );
     }
 
@@ -97,7 +98,12 @@ public class MediaAssetFacadeService {
             return new MediaContext(cms, existing);
         }
 
-        MediaAssetDto entityDto = mediaCmsMapper.fromMedia(referenceId, cms, urlResolver.resolveMediaUrl(cms.originalMediaUrl()), 0);
+        MediaAssetDto entityDto = mediaCmsMapper.fromMedia(
+                referenceId,
+                cms,
+                urlResolver.resolveMediaUrl(cms.originalMediaUrl()),
+                urlResolver.resolveMediaUrl(cms.thumbnailUrl()),
+                0);
         return new MediaContext(cms, mediaAssetMapper.toEntity(entityDto));
 
     }

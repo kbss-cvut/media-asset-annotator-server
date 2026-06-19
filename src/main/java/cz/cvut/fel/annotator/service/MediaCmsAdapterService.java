@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.IntSupplier;
-import java.util.function.ToIntFunction;
 
 @Slf4j
 @Service
@@ -55,10 +55,15 @@ public class MediaCmsAdapterService {
                     media.originalMediaUrl()
             );
 
+            String thumbnailUrl = urlResolver.resolveMediaUrl(
+                    media.thumbnailUrl()
+            );
+
             return mapper.fromMedia(
                     id,
                     media,
                     src,
+                    thumbnailUrl,
                     annotationCount.getAsInt()
             );
 
@@ -70,9 +75,12 @@ public class MediaCmsAdapterService {
 
     public List<MediaAssetDto> getPlaylist(
             String playlistId,
-            ToIntFunction<String> annotationCountFor) {
+            Map<String, Integer> annotationCounts,
+            Map<String, String> annotationsModifiedAt) {
 
         Objects.requireNonNull(playlistId, Constants.Validation.ID);
+        Objects.requireNonNull(annotationCounts, "annotationCounts must not be null");
+        Objects.requireNonNull(annotationsModifiedAt, "annotationsModifiedAt must not be null");
 
         log.debug("{} GET playlist id={}",
                 Constants.Log.MEDIA_CMS_ADAPTER, playlistId);
@@ -86,7 +94,7 @@ public class MediaCmsAdapterService {
         }
 
         List<MediaAssetDto> result = playlist.playlistMedia().stream()
-                .map(media -> mapPlaylistItem(media, annotationCountFor))
+                .map(media -> mapPlaylistItem(media, annotationCounts, annotationsModifiedAt))
                 .toList();
 
         log.info("{} Playlist id={} returned {} asset(s)",
@@ -103,29 +111,22 @@ public class MediaCmsAdapterService {
         }
     }
 
+    /**
+     * Builds a list item entirely from the playlist listing — no per-item
+     * MediaCMS detail call. {@code thumbnail_url} is already an absolute URL in
+     * the listing; {@code resolveMediaUrl} leaves it untouched (and rebases it
+     * onto the public base if MediaCMS ever returns a relative path).
+     */
     private MediaAssetDto mapPlaylistItem(
             PlaylistMediaDto media,
-            ToIntFunction<String> annotationCountFor) {
+            Map<String, Integer> annotationCounts,
+            Map<String, String> annotationsModifiedAt) {
 
-        try {
-            MediaCmsMediaDto mediaDto = client.getMediaByUrl(media.apiUrl());
+        String thumbnailUrl = urlResolver.resolveMediaUrl(media.thumbnailUrl());
+        int count = annotationCounts.getOrDefault(media.friendlyToken(), 0);
+        String annModifiedAt = annotationsModifiedAt.get(media.friendlyToken());
 
-            String src = urlResolver.resolveMediaUrl(
-                    mediaDto.originalMediaUrl()
-            );
-
-            int count = annotationCountFor.applyAsInt(media.friendlyToken());
-
-            return mapper.fromPlaylist(
-                    media,
-                    mediaDto,
-                    src,
-                    count
-            );
-
-        } catch (MediaCmsException ex) {
-            throw resolve(ex, Constants.MediaCms.CATEGORY_MEDIA + media.apiUrl());
-        }
+        return mapper.fromPlaylist(media, thumbnailUrl, annModifiedAt, count);
     }
 
     private boolean isEmpty(PlaylistResponseDto playlist) {
