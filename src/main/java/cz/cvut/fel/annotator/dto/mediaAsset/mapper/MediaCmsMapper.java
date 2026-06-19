@@ -13,6 +13,7 @@ public class MediaCmsMapper {
 
     public MediaAssetDto fromPlaylist(
             PlaylistMediaDto media,
+            MediaCmsMediaDto details,
             String src,
             int annotationCount
     ) {
@@ -20,10 +21,12 @@ public class MediaCmsMapper {
 
         return new MediaAssetDto(
                 media.friendlyToken(),
+                details != null ? MediaAssetMapperUtils.blankToNull(details.title()) : null,
                 MediaAssetMapperUtils.toDtoType(media.mediaType()),
                 src,
                 MediaAssetMapperUtils.mapStatus(annotationCount),
-                MediaAssetMapperUtils.formatInstant(parseInstant(media.addDate()))
+                MediaAssetMapperUtils.formatInstant(parseInstant(media.addDate())),
+                details != null ? MediaAssetMapperUtils.blankToNull(details.description()) : null
         );
     }
 
@@ -37,10 +40,12 @@ public class MediaCmsMapper {
 
         return new MediaAssetDto(
                 id,
+                MediaAssetMapperUtils.blankToNull(media.title()),
                 MediaAssetMapperUtils.toDtoType(media.mediaType()),
                 src,
                 MediaAssetMapperUtils.mapStatus(annotationCount),
-                MediaAssetMapperUtils.formatInstant(parseInstant(media.editDate()))
+                MediaAssetMapperUtils.formatInstant(parseInstant(media.editDate())),
+                MediaAssetMapperUtils.blankToNull(media.description())
         );
     }
 

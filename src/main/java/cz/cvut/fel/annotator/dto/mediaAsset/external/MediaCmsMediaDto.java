@@ -9,6 +9,12 @@ public record MediaCmsMediaDto(
         @JsonProperty("friendly_token")
         String friendlyToken,
 
+        @JsonProperty("title")
+        String title,
+
+        @JsonProperty("description")
+        String description,
+
         @JsonProperty("original_media_url")
         String originalMediaUrl,
 

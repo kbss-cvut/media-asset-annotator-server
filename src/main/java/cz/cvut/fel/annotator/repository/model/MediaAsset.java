@@ -29,6 +29,12 @@ public class MediaAsset extends Thing implements Serializable {
     @OWLDataProperty(iri = Vocabulary.hasSource, datatype = XSD.STRING, simpleLiteral = true, fetch = FetchType.EAGER)
     private String source;
 
+    @OWLDataProperty(iri = Vocabulary.hasName, datatype = XSD.STRING, simpleLiteral = true, fetch = FetchType.EAGER)
+    private String name;
+
+    @OWLDataProperty(iri = Vocabulary.hasDescription, datatype = XSD.STRING, simpleLiteral = true, fetch = FetchType.EAGER)
+    private String description;
+
     @OWLObjectProperty(iri = Vocabulary.hasAnnotation, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Annotation> annotations = new HashSet<>();
 

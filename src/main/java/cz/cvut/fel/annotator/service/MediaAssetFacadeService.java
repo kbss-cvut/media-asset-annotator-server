@@ -91,7 +91,10 @@ public class MediaAssetFacadeService {
         MediaCmsMediaDto cms = mediaCmsAdapterService.getAssetWithMediaCmsRepresentation(referenceId);
         Optional<MediaAsset> entity = mediaAssetService.findEntityByReferenceId(referenceId);
         if (entity.isPresent()) {
-            return new MediaContext(cms, entity.get());
+            MediaAsset existing = entity.get();
+            existing.setName(cms.title());
+            existing.setDescription(cms.description());
+            return new MediaContext(cms, existing);
         }
 
         MediaAssetDto entityDto = mediaCmsMapper.fromMedia(referenceId, cms, urlResolver.resolveMediaUrl(cms.originalMediaUrl()), 0);
