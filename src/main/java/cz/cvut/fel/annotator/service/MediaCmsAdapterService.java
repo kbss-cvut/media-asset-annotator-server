@@ -113,9 +113,9 @@ public class MediaCmsAdapterService {
 
     /**
      * Builds a list item entirely from the playlist listing — no per-item
-     * MediaCMS detail call. {@code thumbnail_url} is already an absolute URL in
-     * the listing; {@code resolveMediaUrl} leaves it untouched (and rebases it
-     * onto the public base if MediaCMS ever returns a relative path).
+     * MediaCMS detail call. In the listing {@code thumbnail_url} is an absolute
+     * URL carrying the internal MediaCMS host; {@code resolveMediaUrl} rebases
+     * it onto the public base so it is reachable from the browser.
      */
     private MediaAssetDto mapPlaylistItem(
             PlaylistMediaDto media,
